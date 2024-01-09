@@ -1,46 +1,44 @@
 use clap::Parser;
+use thiserror::Error;
 // use env_logger::Env;
 
 // use prover::server::serve;
 // use prover::shared_state::SharedState;
 use prover::VERSION;
 
-#[derive(Debug)]
+#[derive(Error, Debug)]
 pub enum GevulotError {
-    // #[error("Error with base64 decoding")]
+    #[error("Error with base64 decoding")]
     Base64DecodeError,
-    // #[error("Error with base64 encoding")]
+    #[error("Error with base64 encoding")]
     Base64EncodeError,
-    // #[error("Error with canonical serialization")]
+    #[error("Error with canonical serialization")]
     CanonicalDeserializeError,
-    // #[error("Error with canonical deserialization")]
+    #[error("Error with canonical deserialization")]
     CanonicalSerializeError,
-    // #[error("IO Error")]
+    #[error("IO Error")]
     ErrorIo,
-    // #[error("Error with JSON serialization")]
+    #[error("Error with JSON serialization")]
     JsonDeserializeError,
-    // #[error("Error with JSON deserialization")]
+    #[error("Error with JSON deserialization")]
     JsonSerializeError,
-    // #[error("Could not parse the r1cs file data")]
+    #[error("Could not parse the r1cs file data")]
     R1csParseError,
-    // #[error("Could not parse the r1cs file data")]
+    #[error("Could not parse the r1cs file data")]
     WtnsParseError,
-    // #[error("Error in Groth16 setup")]
+    #[error("Error in Groth16 setup")]
     Groth16SetupError,
-    // #[error("Error in Groth16 verification")]
+    #[error("Error in Groth16 verification")]
     Groth16VerifyError,
-    // #[error("Error in Marlin verification")]
+    #[error("Error in Marlin verification")]
     MarlinVerifyError,
-    // #[error("Filecoin window post error")]
+    #[error("Filecoin window post error")]
     FilecoinWindowPostError,
-    // #[error("Filecoin winning post error")]
+    #[error("Filecoin winning post error")]
     FilecoinWinningPostError,
 }
 
-use eth_types::{
-    Address, Block, Bytes, EIP1186ProofResponse, GethExecTrace, Hash, ResultGethExecTraces,
-    Transaction, Word, U64,
-};
+use eth_types::{Block, Transaction};
 
 #[derive(Parser, Debug)]
 #[clap(version = VERSION, about)]
@@ -55,22 +53,21 @@ pub(crate) struct ProverdConfig {
     lookup: Option<String>,
 }
 
-fn doit() {
-    let block_path = "block.json".to_string();
-    let jblock = std::fs::read_to_string(block_path)
-        .map_err(|_| GevulotError::ErrorIo)
-        .unwrap();
-    let block: Block<Transaction> = serde_json::from_str(&jblock)
-        .map_err(|_| GevulotError::CanonicalDeserializeError)
-        .unwrap();
-    println!("the block we read in looks like this: {:?}", block);
+fn read_block(block_path: String) -> Result<Block<Transaction>, GevulotError> {
+    let jblock = std::fs::read_to_string(block_path).map_err(|_| GevulotError::ErrorIo)?;
+    let block: Block<Transaction> =
+        serde_json::from_str(&jblock).map_err(|_| GevulotError::CanonicalDeserializeError)?;
+    Ok(block)
 }
 
 #[tokio::main]
 async fn main() {
-    println!("Are we there yet?  Let's go.");
-    doit();
-    println!("that's all she wrote.");
+    println!("Let's go!");
+    let result = read_block("block.json".to_string());
+    println!(
+        "The block we read in looks like this:\n{:?}",
+        result.unwrap()
+    );
     // let config = ProverdConfig::parse();
     // env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
 
