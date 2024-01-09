@@ -1,0 +1,48 @@
+[package]
+name = "taiko-prover"
+version = "0.1.0"
+edition = "2021"
+# [workspace]
+# members = [
+#   "prover",
+#   "dev"
+# ]
+# resolver = "2"
+
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# halo2_proofs = { git = "https://github.com/privacy-scaling-explorations/halo2.git", tag = "v2023_04_20" }
+# hyper = { version = "0.14.16", features = ["server"] }
+# snark-verifier = { git = "https://github.com/privacy-scaling-explorations/snark-verifier.git", tag = "v2023_04_20", default-features = false, features = ["loader_evm", "parallel"] }
+# tokio = { version = "1.16.1", features = ["macros", "rt-multi-thread"] }
+# rand_xorshift = "0.3"
+# log = "0.4.14"
+# rand = "0.8.4"
+# serde = { version = "1.0.136", features = ["derive"] }
+# serde_json = "1.0.78"
+# strum = "0.24"
+
+
+# # bus-mapping = { git = "https://github.com/privacy-scaling-explorations/zkevm-circuits.git", branch = "main", features = ["test"] }
+# # eth-types = { git = "https://github.com/privacy-scaling-explorations/zkevm-circuits.git", branch = "main", features = ["warn-unimplemented"] }
+# # zkevm-circuits = { git = "https://github.com/privacy-scaling-explorations/zkevm-circuits.git", branch = "main", features = ["test-circuits"] }
+# env_logger = "0.9.0"
+# ethers-providers = "0.17.0"
+# # zkevm_common = { path = "../common" }
+# itertools = "0.10.3"
+# clap = { version = "4.0.14", features = ["derive", "env"] }
+
+
+
+
+
+# ethers-core = "0.17.0"
+# ethers-signers = "0.17.0"
+prover = { path = "src/prover" }
+# hyper = { version = "0.14.16", features = ["server"] }
+
+# zkevm_dev = { path = "src/dev" }
+# zkevm_common = { path = "src/common" }
